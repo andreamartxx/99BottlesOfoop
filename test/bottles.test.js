@@ -67,6 +67,7 @@ describe('Bottles', () => {
   });
 
   test('a few verses', () => {
+    const bottles = new Bottles();
      const expected =
       '2 bottles of beer on the wall, ' +
       '2 bottles of beer.\n' +
