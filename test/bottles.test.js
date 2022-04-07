@@ -114,4 +114,32 @@ describe('CountdownSong', () => {
     '97 bottles of beer on the wall.\n';
   expect(countdownSong.verses(99, 98)).toBe(expected);
    });
+
+   test('a few verses', () => {
+    const countdownSong = new CountdownSong();
+     const expected =
+      '2 bottles of beer on the wall, ' +
+      '2 bottles of beer.\n' +
+      'Take one down and pass it around, ' +
+      '1 bottle of beer on the wall.\n' +
+      '\n' +
+      '1 bottle of beer on the wall, ' +
+      '1 bottle of beer.\n' +
+      'Take it down and pass it around, ' +
+      'no more bottles of beer on the wall.\n' +
+      '\n' +
+      'no more bottles of beer on the wall, ' +
+      'no more bottles of beer.\n' +
+      'Go to the store and buy some more, ' +
+      '99 bottles of beer on the wall.\n';
+    expect(countdownSong.verses(2, 0)).toBe(expected);
+  });
+
+  test('test the whole song', () => {
+    const countdownSong = new CountdownSong();
+    const expected = downTo(99, 0)
+      .map(i => countdownSong.verse(i))
+      .join('\n');
+    expect(countdownSong.song()).toBe(expected);
+  });
   });
