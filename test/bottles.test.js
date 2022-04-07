@@ -1,4 +1,5 @@
 const Bottles = require('../lib/bottles');
+const downTo = require('../lib/helpers');
 
 describe('Bottles', () => {
   test('the first verse', () => {
@@ -88,6 +89,9 @@ describe('Bottles', () => {
 
   test('the whole song', ()=>{
     const bottles = new Bottles();
+    const expected = downTo(99, 0)
+      .map(i => bottles.verse(i))
+      .join('\n');
     expect(bottles.song()).toBe(bottles.verses(99, 0));
   });
 });
