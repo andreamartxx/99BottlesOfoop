@@ -94,4 +94,8 @@ describe('Bottles', () => {
       .join('\n');
     expect(bottles.song()).toBe(bottles.verses(99, 0));
   });
+
+  test('pronoun', ()=>{
+    expect(new BottleNumber1(1).pronoun()).toBe('it');
+  })
 });
