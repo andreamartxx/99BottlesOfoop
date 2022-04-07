@@ -48,7 +48,7 @@ describe('Bottles', () => {
       'no more bottles of beer.\n' +
       'Go to the store and buy some more, ' +
       '99 bottles of beer on the wall.\n';
-    expect(bottles.verse(1)).toBe(expected);
+    expect(bottles.verse(0)).toBe(expected);
   });
 
   test('the whole song', ()=>{
