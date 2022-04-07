@@ -92,10 +92,11 @@ describe('Bottles', () => {
     const expected = downTo(99, 0)
       .map(i => bottles.verse(i))
       .join('\n');
-    expect(bottles.song()).toBe(bottles.verses(99, 0));
+    expect(bottles.song()).toBe(expected);
   });
 
-  test('pronoun', ()=>{
-    expect(new BottleNumber1(1).pronoun()).toBe('it');
-  })
 });
+
+ describe('BottleVerse', () => {
+    
+  });
