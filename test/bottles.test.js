@@ -41,6 +41,16 @@ describe('Bottles', () => {
     expect(bottles.verse(1)).toBe(expected);
   });
 
+  test('verse 0', () => {
+    const bottles = new Bottles();
+    const expected =
+      'No more bottles of beer on the wall, ' +
+      'no more bottles of beer.\n' +
+      'Go to the store and buy some more, ' +
+      '99 bottles of beer on the wall.\n';
+    expect(bottles.verse(1)).toBe(expected);
+  });
+
   test('the whole song', ()=>{
     const bottles = new Bottles();
     expect(bottles.song()).toBe(bottles.verses(99, 0));
