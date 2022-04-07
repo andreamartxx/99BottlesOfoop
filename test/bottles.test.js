@@ -51,6 +51,21 @@ describe('Bottles', () => {
     expect(bottles.verse(0)).toBe(expected);
   });
 
+  test('couple of verses', () => {
+    const bottles = new Bottles();
+    const expected =
+        '99 bottles of beer on the wall, ' +
+        '99 bottles of beer.\n' +
+        'Take one down and pass it around, ' +
+        '98 bottles of beer on the wall.\n' +
+        '\n' +
+        '98 bottles of beer on the wall, ' +
+        '98 bottles of beer.\n' +
+        'Take one down and pass it around, ' +
+        '97 bottles of beer on the wall.\n'
+    expect(bottles.verses(99, 98)).toBe(expected);
+  });
+
   test('the whole song', ()=>{
     const bottles = new Bottles();
     expect(bottles.song()).toBe(bottles.verses(99, 0));
