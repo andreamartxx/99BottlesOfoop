@@ -1,145 +1,121 @@
-const Bottles = require('../lib/bottles');
+const BottleVerse = require('../lib/bottles');
 const CountdownSong = require('../lib/bottles');
-const downTo = require('../lib/helpers');
 
-describe('Bottles', () => {
-  test('the first verse', () => {
-    const bottles = new Bottles();
+class VerseFake {
+  static lyrics(number) {
+    return `This is verse ${number}.\n`;
+  }
+}
+
+const testPlaysVerseRole = rolePlayer => {
+  test('plays verse role', () => {
+    expect(rolePlayer).toHaveProperty('lyrics', expect.any(Function));
+  });
+};
+
+describe('CountdownSong', () => {
+  describe('VerseFake', () => {
+    testPlaysVerseRole(VerseFake);
+  });
+
+  test('verse', () => {
+    const expected = 'This is verse 500.\n';
+    expect(new CountdownSong(VerseFake).verse(500)).toBe(expected);
+  });
+
+  test('verses', () => {
+    const expected =
+      'This is verse 99.\n' +
+      '\n' +
+      'This is verse 98.\n' +
+      '\n' +
+      'This is verse 97.\n';
+    expect(new CountdownSong(VerseFake).verses(99, 97)).toBe(expected);
+  });
+
+  test('the whole song', () => {
+    const countdownSong = new CountdownSong();
+    const expected =
+      'This is verse 47.\n' +
+      '\n' +
+      'This is verse 46.\n' +
+      '\n' +
+      'This is verse 45.\n' +
+      '\n' +
+      'This is verse 44.\n' +
+      '\n' +
+      'This is verse 43.\n';
+    expect(countdownSong(VerseFake, 47, 43).song()).toBe(expected);
+  });
+});
+
+describe('BottleVerse', () => {
+  testPlaysVerseRole(BottleVerse);
+
+  test('verse general rule upper bound', () => {
     const expected =
       '99 bottles of beer on the wall, ' +
       '99 bottles of beer.\n' +
       'Take one down and pass it around, ' +
       '98 bottles of beer on the wall.\n';
-    expect(bottles.verse(99)).toBe(expected);
+    expect(BottleVerse.lyrics(99)).toBe(expected);
   });
 
-  test('another verse', () => {
-    const bottles = new Bottles();
+  test('verse general rule lower bound', () => {
     const expected =
       '3 bottles of beer on the wall, ' +
       '3 bottles of beer.\n' +
       'Take one down and pass it around, ' +
       '2 bottles of beer on the wall.\n';
-    expect(bottles.verse(3)).toBe(expected);
+    expect(BottleVerse.lyrics(3)).toBe(expected);
+  });
+
+  test('verse 7', () => {
+    const expected =
+      '7 bottles of beer on the wall, ' +
+      '7 bottles of beer.\n' +
+      'Take one down and pass it around, ' +
+      '1 six-pack of beer on the wall.\n';
+    expect(BottleVerse.lyrics(7)).toBe(expected);
+  });
+
+  test('verse 6', () => {
+    const expected =
+      '1 six-pack of beer on the wall, ' +
+      '1 six-pack of beer.\n' +
+      'Take one down and pass it around, ' +
+      '5 bottles of beer on the wall.\n';
+    expect(BottleVerse.lyrics(6)).toBe(expected);
   });
 
   test('verse 2', () => {
-    const bottles = new Bottles();
     const expected =
       '2 bottles of beer on the wall, ' +
       '2 bottles of beer.\n' +
       'Take one down and pass it around, ' +
       '1 bottle of beer on the wall.\n';
-    expect(bottles.verse(2)).toBe(expected);
+    expect(BottleVerse.lyrics(2)).toBe(expected);
   });
 
   test('verse 1', () => {
-    const bottles = new Bottles();
     const expected =
       '1 bottle of beer on the wall, ' +
       '1 bottle of beer.\n' +
       'Take it down and pass it around, ' +
       'no more bottles of beer on the wall.\n';
-    expect(bottles.verse(1)).toBe(expected);
+    expect(BottleVerse.lyrics(1)).toBe(expected);
   });
 
   test('verse 0', () => {
-    const bottles = new Bottles();
     const expected =
       'no more bottles of beer on the wall, ' +
       'no more bottles of beer.\n' +
       'Go to the store and buy some more, ' +
       '99 bottles of beer on the wall.\n';
-    expect(bottles.verse(0)).toBe(expected);
+    expect(BottleVerse.lyrics(0)).toBe(expected);
   });
-
-  test('couple of verses', () => {
-    const bottles = new Bottles();
-    const expected =
-        '99 bottles of beer on the wall, ' +
-        '99 bottles of beer.\n' +
-        'Take one down and pass it around, ' +
-        '98 bottles of beer on the wall.\n' +
-        '\n' +
-        '98 bottles of beer on the wall, ' +
-        '98 bottles of beer.\n' +
-        'Take one down and pass it around, ' +
-        '97 bottles of beer on the wall.\n'
-    expect(bottles.verses(99, 98)).toBe(expected);
-  });
-
-  test('a few verses', () => {
-    const bottles = new Bottles();
-     const expected =
-      '2 bottles of beer on the wall, ' +
-      '2 bottles of beer.\n' +
-      'Take one down and pass it around, ' +
-      '1 bottle of beer on the wall.\n' +
-      '\n' +
-      '1 bottle of beer on the wall, ' +
-      '1 bottle of beer.\n' +
-      'Take it down and pass it around, ' +
-      'no more bottles of beer on the wall.\n' +
-      '\n' +
-      'no more bottles of beer on the wall, ' +
-      'no more bottles of beer.\n' +
-      'Go to the store and buy some more, ' +
-      '99 bottles of beer on the wall.\n';
-    expect(bottles.verses(2, 0)).toBe(expected);
-  });
-
-  test('test the whole song', () => {
-    const bottles = new Bottles();
-    const expected = downTo(99, 0)
-      .map(i => bottles.verse(i))
-      .join('\n');
-    expect(bottles.song()).toBe(expected);
-  });
-
 });
 
-
-describe('CountdownSong', () => {
-   test('a couple verses', () => {
-    const countdownSong = new CountdownSong();
-    const expected =
-    '99 bottles of beer on the wall, ' +
-    '99 bottles of beer.\n' +
-    'Take one down and pass it around, ' +
-    '98 bottles of beer on the wall.\n' +
-    '\n' +
-    '98 bottles of beer on the wall, ' +
-    '98 bottles of beer.\n' +
-    'Take one down and pass it around, ' +
-    '97 bottles of beer on the wall.\n';
-  expect(countdownSong.verses(99, 98)).toBe(expected);
-   });
-
-   test('a few verses', () => {
-    const countdownSong = new CountdownSong();
-     const expected =
-      '2 bottles of beer on the wall, ' +
-      '2 bottles of beer.\n' +
-      'Take one down and pass it around, ' +
-      '1 bottle of beer on the wall.\n' +
-      '\n' +
-      '1 bottle of beer on the wall, ' +
-      '1 bottle of beer.\n' +
-      'Take it down and pass it around, ' +
-      'no more bottles of beer on the wall.\n' +
-      '\n' +
-      'no more bottles of beer on the wall, ' +
-      'no more bottles of beer.\n' +
-      'Go to the store and buy some more, ' +
-      '99 bottles of beer on the wall.\n';
-    expect(countdownSong.verses(2, 0)).toBe(expected);
-  });
-
-  test('test the whole song', () => {
-    const countdownSong = new CountdownSong();
-    const expected = downTo(99, 0)
-      .map(i => countdownSong.verse(i))
-      .join('\n');
-    expect(countdownSong.song()).toBe(expected);
-  });
-  });
+describe('VerseFake', () => {
+  testPlaysVerseRole(VerseFake);
+});
